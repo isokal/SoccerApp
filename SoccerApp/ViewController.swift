@@ -7,6 +7,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var soccerTableView: UITableView!
     var cellClicked: Int = 0
     private var subscriptions = Set<AnyCancellable>()
+    private let playerCountLimit = 3
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.soccerPlayers.count
@@ -48,7 +49,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else if let addController = segue.destination as? AddViewController,
                   segue.identifier == "AddButtonSegue" {
             addController.soccerPlayerPublisher.sink { [weak self] player in
-                if let count = self?.soccerPlayers.count, count >= 3 {
+                if let count = self?.soccerPlayers.count,
+                   let limit = self?.playerCountLimit,
+                   count >= limit {
                     let alert = UIAlertController(title: "Limit reached", message: "Can't add 12th player", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                     self?.present(alert, animated: true)

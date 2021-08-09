@@ -17,21 +17,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
 
     private let saveButtonTapSubject = PassthroughSubject<Void, Never>()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        saveBarButton.isEnabled = false
-        nameTextField.placeholder = "Name"
-        surnameTextField.placeholder = "Surname"
-        countryTextField.placeholder = "Country"
-        nameTextField.backgroundColor = UIColor.lightGray
-        surnameTextField.backgroundColor = UIColor.lightGray
-        countryTextField.backgroundColor = UIColor.lightGray
-
-        failurePublisher.sink { [weak self] error in
-            print(error)
-        }.store(in: &subscriptions)
-    }
-
     private lazy var saveButtonTapPublisher = saveButtonTapSubject.share().eraseToAnyPublisher()
 
     lazy var soccerPlayerPublisher: AnyPublisher<SoccerPlayer, Never> = saveButtonTapPublisher
@@ -43,13 +28,31 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         .compactMap { [weak self] in
             return self?.createPlayer() == nil ? "Couldn't create player" : nil
         }.eraseToAnyPublisher()
-    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        saveBarButton.isEnabled = false
+        nameTextField.placeholder = "Name"
+        surnameTextField.placeholder = "Surname"
+        countryTextField.placeholder = "Country"
+        nameTextField.backgroundColor = UIColor.lightGray
+        surnameTextField.backgroundColor = UIColor.lightGray
+        countryTextField.backgroundColor = UIColor.lightGray
+        setupSubscriptions()
+    }
+
     @IBAction func addImageButtonPressed(_ sender: Any) {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.mediaTypes = ["public.image"]
         pickerController.sourceType = .photoLibrary
         present(pickerController, animated: true)
+    }
+
+    private func setupSubscriptions() {
+        failurePublisher.sink { [weak self] error in
+            print(error)
+        }.store(in: &subscriptions)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
