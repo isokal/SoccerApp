@@ -1,10 +1,3 @@
-//
-//  SoccerPlayer.swift
-//  MyFirstApp
-//
-//  Created by Iwo Sokal on 07/07/2021.
-//
-//change to closures, 2nd 1st, notificationcenter
 import Foundation
 import UIKit
 

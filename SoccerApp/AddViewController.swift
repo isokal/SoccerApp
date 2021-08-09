@@ -1,11 +1,3 @@
-//
-//  AddViewController.swift
-//  MyFirstApp
-//
-//  Created by Iwo Sokal on 09/07/2021.
-//
-//anchors, constraints
-
 import Foundation
 import UIKit
 
@@ -25,7 +17,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         saveBarButton.isEnabled = false
         nameTextField.placeholder = "Name"
         surnameTextField.placeholder = "Surname"
-        countryTextField.placeholder = "Countryasd"
+        countryTextField.placeholder = "Country"
         nameTextField.backgroundColor = UIColor.lightGray
         surnameTextField.backgroundColor = UIColor.lightGray
         countryTextField.backgroundColor = UIColor.lightGray
@@ -36,7 +28,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         pickerController.delegate = self
         pickerController.mediaTypes = ["public.image"]
         pickerController.sourceType = .photoLibrary
-        present(pickerController, animated:true)
+        present(pickerController, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

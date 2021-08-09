@@ -1,10 +1,3 @@
-//
-//  SecondViewController.swift
-//  MyFirstApp
-//
-//  Created by Iwo Sokal on 07/07/2021.
-//
-
 import Foundation
 import UIKit
 
