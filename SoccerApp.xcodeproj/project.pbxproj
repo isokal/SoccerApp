@@ -50,8 +50,8 @@
 		576CD060269593EA00F7DA1C = {
 			isa = PBXGroup;
 			children = (
-				576CD06B269593EA00F7DA1C /* SoccerApp */,
 				576CD06A269593EA00F7DA1C /* Products */,
+				576CD06B269593EA00F7DA1C /* SoccerApp */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,18 +66,18 @@
 		576CD06B269593EA00F7DA1C /* SoccerApp */ = {
 			isa = PBXGroup;
 			children = (
+				572E12982698711F00119638 /* AddDelegate.swift */,
+				572E12962698475900119638 /* AddViewController.swift */,
 				576CD06C269593EA00F7DA1C /* AppDelegate.swift */,
-				576CD06E269593EA00F7DA1C /* SceneDelegate.swift */,
-				576CD070269593EA00F7DA1C /* ViewController.swift */,
-				576CD072269593EA00F7DA1C /* Main.storyboard */,
-				578B977C26970E2000C942BE /* SoccerTableViewCell.swift */,
 				576CD075269593EB00F7DA1C /* Assets.xcassets */,
-				576CD077269593EB00F7DA1C /* LaunchScreen.storyboard */,
 				576CD07A269593EB00F7DA1C /* Info.plist */,
+				576CD077269593EB00F7DA1C /* LaunchScreen.storyboard */,
+				576CD072269593EA00F7DA1C /* Main.storyboard */,
+				576CD06E269593EA00F7DA1C /* SceneDelegate.swift */,
 				578B97782695E83200C942BE /* SecondViewController.swift */,
 				578B977A2695F3D100C942BE /* SoccerPlayer.swift */,
-				572E12962698475900119638 /* AddViewController.swift */,
-				572E12982698711F00119638 /* AddDelegate.swift */,
+				578B977C26970E2000C942BE /* SoccerTableViewCell.swift */,
+				576CD070269593EA00F7DA1C /* ViewController.swift */,
 			);
 			path = SoccerApp;
 			sourceTree = "<group>";
