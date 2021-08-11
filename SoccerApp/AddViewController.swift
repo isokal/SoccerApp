@@ -16,17 +16,14 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
 
     private var subscriptions = Set<AnyCancellable>()
 
-    private lazy var saveButtonTapPublisher = saveBarButton.tapPublisher.share().eraseToAnyPublisher()
-
-    lazy var soccerPlayerPublisher: AnyPublisher<SoccerPlayer, Never> = saveButtonTapPublisher
-        .compactMap { [weak self] in
-            return self?.createPlayer()
-        }.eraseToAnyPublisher()
-
-    private lazy var failurePublisher: AnyPublisher<String, Never> = saveButtonTapPublisher
-        .compactMap { [weak self] in
-            return self?.createPlayer() == nil ? "Couldn't create player" : nil
-        }.eraseToAnyPublisher()
+    lazy var soccerPlayerPublisher: AnyPublisher<SoccerPlayer, Never> = saveBarButton.tapPublisher
+        .handleEvents(receiveOutput: { [weak self] in
+            if self?.createPlayer() == nil {
+                print("Coudn't create player")
+            }
+        })
+        .compactMap { [weak self] in return self?.createPlayer() }
+        .eraseToAnyPublisher()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +34,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         nameTextField.backgroundColor = UIColor.lightGray
         surnameTextField.backgroundColor = UIColor.lightGray
         countryTextField.backgroundColor = UIColor.lightGray
-        setupSubscriptions()
     }
 
     @IBAction func addImageButtonPressed(_ sender: Any) {
@@ -46,12 +42,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         pickerController.mediaTypes = ["public.image"]
         pickerController.sourceType = .photoLibrary
         present(pickerController, animated: true)
-    }
-
-    private func setupSubscriptions() {
-        failurePublisher.sink { [weak self] error in
-            print(error)
-        }.store(in: &subscriptions)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
