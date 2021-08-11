@@ -1,3 +1,5 @@
+import Combine
+import CombineCocoa
 import Foundation
 import UIKit
 
@@ -11,7 +13,18 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var addImageButton: UIButton!
     @IBOutlet weak var chosenImageView: UIImageView!
     @IBOutlet weak var addStackView: UIStackView!
-    
+
+    private var subscriptions = Set<AnyCancellable>()
+
+    lazy var soccerPlayerPublisher: AnyPublisher<SoccerPlayer, Never> = saveBarButton.tapPublisher
+        .handleEvents(receiveOutput: { [weak self] in
+            if self?.createPlayer() == nil {
+                print("Coudn't create player")
+            }
+        })
+        .compactMap { [weak self] in return self?.createPlayer() }
+        .eraseToAnyPublisher()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         saveBarButton.isEnabled = false
@@ -22,7 +35,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         surnameTextField.backgroundColor = UIColor.lightGray
         countryTextField.backgroundColor = UIColor.lightGray
     }
-    
+
     @IBAction func addImageButtonPressed(_ sender: Any) {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
@@ -48,17 +61,16 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             saveBarButton.isEnabled = false
         }
     }
-    
-    @IBAction func savePressed(_ sender: Any) {
-        if let name = nameTextField.text,
-           let surname = surnameTextField.text,
-           let country = countryTextField.text {
-            player = SoccerPlayer(name: name, surname: surname, image: image, country: country)
-            if let player = self.player {
-                let playerDataDict:[String: SoccerPlayer] = ["player": player]
-                NotificationCenter.default.post(name: Notification.Name("didAddPlayer"), object: nil, userInfo: playerDataDict)
-            }
-            self.navigationController?.popViewController(animated: true)
+
+    private func createPlayer() -> SoccerPlayer? {
+        if let name = nameTextField.text, !name.isEmpty,
+           let surname = surnameTextField.text, !surname.isEmpty,
+           let country = countryTextField.text, !country.isEmpty,
+           image != nil {
+            return SoccerPlayer(name: name, surname: surname, image: image, country: country)
+        } else {
+            return nil
         }
     }
+
 }
