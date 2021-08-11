@@ -2,11 +2,11 @@ import Combine
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    private var subscriptions = Set<AnyCancellable>()
     var soccerPlayers: [SoccerPlayer] = []
     @IBOutlet weak var myBackgroundImageView: UIImageView!
     @IBOutlet weak var soccerTableView: UITableView!
     var cellClicked: Int = 0
-    private var subscriptions = Set<AnyCancellable>()
     private let playerCountLimit = 3
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -49,6 +49,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else if let addController = segue.destination as? AddViewController,
                   segue.identifier == "AddButtonSegue" {
             addController.soccerPlayerPublisher.sink { [weak self] player in
+                self?.navigationController?.popViewController(animated: true)
                 if let count = self?.soccerPlayers.count,
                    let limit = self?.playerCountLimit,
                    count >= limit {

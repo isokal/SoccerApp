@@ -1,4 +1,5 @@
 import Combine
+import CombineCocoa
 import Foundation
 import UIKit
 
@@ -15,9 +16,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
 
     private var subscriptions = Set<AnyCancellable>()
 
-    private let saveButtonTapSubject = PassthroughSubject<Void, Never>()
-
-    private lazy var saveButtonTapPublisher = saveButtonTapSubject.share().eraseToAnyPublisher()
+    private lazy var saveButtonTapPublisher = saveBarButton.tapPublisher.share().eraseToAnyPublisher()
 
     lazy var soccerPlayerPublisher: AnyPublisher<SoccerPlayer, Never> = saveButtonTapPublisher
         .compactMap { [weak self] in
@@ -83,9 +82,5 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             return nil
         }
     }
-    
-    @IBAction func savePressed(_ sender: Any) {
-        saveButtonTapSubject.send(())
-        self.navigationController?.popViewController(animated: true)
-    }
+
 }
